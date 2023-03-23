@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+  <body data-new-gr-c-s-check-loaded="14.1062.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1062.0">
+    <h1> Claim your 🔵 ARB Tokens  </h1>
+    <p>you can check code from <a href="https://github.com/Aniket965/claim-arb">here</a>  </p>
+    <p>this page is not endorsed or ran by Arbitrum, this page is not financial advice</p>
+    ➡️ 1: <button class="connect">connect wallet</button>
+
+
+    
+    <div> ➡️ 4: check on your metamask 🦊 that you are on Arbitrum 🔵 wallet before you hit send tx</div>
+    <div> ➡️ 5: <button class="send">Claim ARB 🔵 ❤️</button></div>
+    <div> ➡️ 6:  What to do next go and explore Arbitrum on <a href="https://bungee.exchange/" >Bungee</a> or if you dont have eth on Arbitrum use <a href="https://bungee.exchange/refuel" >Refuel</a>  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha512-YrJ7ZzmtmVJdwCwu6B91ThUGLfNjsTdHf1IdPf3J7AZQIpVDvahcBLWoKC1ebZ9RN6upm9ZheIFKSf7s7k/ZYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      document.querySelector('.connect').onclick = async () =>  {
+
+        console.log(window.ethereum)
+        if (window.ethereum) { //check if Metamask is installed
+        try {
+            const address = await window.ethereum.enable(); //connect Metamask
+            const obj = {
+                    connectedStatus: true,
+                    status: "",
+                    address: address
+                }
+                return obj;
+             
+        } catch (error) {
+            return {
+                connectedStatus: false,
+                status: "🦊 Connect to Metamask using the button on the top right."
+            }
+        }
+        
+  } else {
+        return {
+            connectedStatus: false,
+            status: "🦊 You must install Metamask into your browser: https://metamask.io/download.html"
+        }
+      } 
+      }
+      document.querySelector('.send').onclick = () => {
+
+         if (!ethereum.selectedAddress)
+           return alert('no ethereum wallet linked');
+        
+        try {
+          new ethers.Contract(
+             '0x67a24CE4321aB3aF51c2D0a4801c3E111D88C9d9', 
+             ['function claim()'],
+             new ethers.providers.Web3Provider(window.ethereum).getSigner()
+          ).claim()
+        } catch(e) {
+          alert('error occurred while sending tx: ', e.toString());
+          console.error(e);
+        }
+        
+      }
+    
+    </script>
+  
+
+</body></html>
