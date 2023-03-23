@@ -5,6 +5,7 @@
     <p>you can check code from <a href="https://github.com/Aniket965/claim-arb">here</a>  </p>
     <p>this page is not endorsed or ran by Arbitrum, this page is not financial advice</p>
     ➡️ 1: <button class="connect">connect wallet</button>
+    <p id="user-address"></p>
 
 
     
@@ -19,14 +20,22 @@
         if (window.ethereum) { //check if Metamask is installed
         try {
             const address = await window.ethereum.enable(); //connect Metamask
+
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chainId.toLowerCase() !== '0xa4b1') {
+                alert('Please switch to Arbitrum network');
+                return;
+            }
             const obj = {
                     connectedStatus: true,
                     status: "",
                     address: address
-                }
+            }
+            document.getElementById("user-address").innerHTML = "✅ your connected address: " + address;
                 return obj;
              
         } catch (error) {
+            document.getElementById("user-address").innerHTML = "❌ your connected address: " + error;
             return {
                 connectedStatus: false,
                 status: "🦊 Connect to Metamask using the button on the top right."
@@ -50,9 +59,12 @@
              '0x67a24CE4321aB3aF51c2D0a4801c3E111D88C9d9', 
              ['function claim()'],
              new ethers.providers.Web3Provider(window.ethereum).getSigner()
-          ).claim()
+          ).claim().catch(e => {
+            alert('error occurred while sending tx: ' + e?.data?.message);
+            console.error(e);
+          });
         } catch(e) {
-          alert('error occurred while sending tx: ', e.toString());
+          alert('error occurred while sending tx: ' + e?.data?.message);
           console.error(e);
         }
         
